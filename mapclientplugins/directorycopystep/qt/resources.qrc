@@ -1,0 +1,6 @@
+
+<RCC>
+  <qresource prefix="directorycopystep">
+    <file>images/data-sink.png</file>
+  </qresource>
+</RCC>
