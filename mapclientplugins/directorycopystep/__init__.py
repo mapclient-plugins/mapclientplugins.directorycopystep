@@ -6,7 +6,7 @@ MAP Client Plugin - Generated from MAP Client v0.20.0
 __version__ = '0.1.0'
 __author__ = 'Hugh Sorby'
 __stepname__ = 'Directory Copy'
-__location__ = ''
+__location__ = 'https://github.com/mapclient-plugins/mapclientplugins.directorycopystep'
 
 # import class that derives itself from the step mountpoint.
 from mapclientplugins.directorycopystep import step
