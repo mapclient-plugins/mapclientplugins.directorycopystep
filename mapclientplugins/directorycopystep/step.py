@@ -50,11 +50,12 @@ class DirectoryCopyStep(WorkflowStepMountPoint):
                 if os.path.isfile(os.path.join(path, _file)):
                     yield os.path.join(path, _file)
 
+        output_location = os.path.realpath(os.path.join(self._location, self._config['location']))
         if self._config['Recurse Directory Structure']:
-            shutil.copytree(self._portData0, self._config['location'], dirs_exist_ok=True)
+            shutil.copytree(self._portData0, output_location, dirs_exist_ok=True)
         else:
             for file in _list_files(self._portData0):
-                shutil.copy2(file, self._config['location'])
+                shutil.copy2(file, output_location)
 
         self._doneExecution()
 
