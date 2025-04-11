@@ -42,6 +42,7 @@ class DirectoryCopyStep(WorkflowStepMountPoint):
             'location': '',
             'previous_location': '',
         }
+        self._relative_path_config_keys = ['location', 'previous_location']
 
     def execute(self):
         """
@@ -102,6 +103,13 @@ class DirectoryCopyStep(WorkflowStepMountPoint):
         identifier = self._config['identifier']
         self._config = construct_configuration(configuration, keys, relative_keys, self._location)
         self._config['identifier'] = identifier
+
+    def relocateConfiguration(self, to_location):
+        for key in self._relative_path_config_keys:
+            value = self._config.get(key, '')
+            if value:
+                absolute_path = os.path.join(self._location, value)
+                self._config[key] = os.path.relpath(absolute_path, to_location)
 
     def getIdentifier(self):
         """
