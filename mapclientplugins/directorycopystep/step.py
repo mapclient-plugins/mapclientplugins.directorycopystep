@@ -7,9 +7,14 @@ import os
 import shutil
 
 from PySide6 import QtGui
+from packaging.version import Version
 
 from mapclient.mountpoints.workflowstep import WorkflowStepMountPoint
+from mapclient.settings.version import __version__ as mapclient_version
 from mapclientplugins.directorycopystep.configuredialog import ConfigureDialog
+
+if Version("0.24.0") <= Version(mapclient_version):
+    from mapclient.core.utils import construct_configuration
 
 
 class DirectoryCopyStep(WorkflowStepMountPoint):
@@ -90,6 +95,13 @@ class DirectoryCopyStep(WorkflowStepMountPoint):
 
         self._configured = dlg.validate()
         self._configuredObserver()
+
+    def setConfiguration(self, configuration):
+        keys = ['location', 'previous_location', 'Recurse Directory Structure']
+        relative_keys = ['location', 'previous_location']
+        identifier = self._config['identifier']
+        self._config = construct_configuration(configuration, keys, relative_keys, self._location)
+        self._config['identifier'] = identifier
 
     def getIdentifier(self):
         """
