@@ -3,6 +3,8 @@ import os
 from PySide6 import QtWidgets
 from mapclientplugins.directorycopystep.ui_configuredialog import Ui_ConfigureDialog
 
+from mapclient.core.utils import to_exchangeable_path, to_system_path
+
 INVALID_STYLE_SHEET = 'background-color: rgba(239, 0, 0, 50)'
 DEFAULT_STYLE_SHEET = ''
 
@@ -104,8 +106,8 @@ class ConfigureDialog(QtWidgets.QDialog):
         config = {
             'identifier': self._ui.lineEditIdentifier.text(),
             'Recurse Directory Structure': self._ui.checkBoxRecurse.isChecked(),
-            'location': self._ui.lineEditDirectoryLocation.text(),
-            'previous_location': self._previous_location,
+            'location': to_exchangeable_path(self._ui.lineEditDirectoryLocation.text()),
+            'previous_location': to_exchangeable_path(self._previous_location),
         }
         return config
 
@@ -118,6 +120,5 @@ class ConfigureDialog(QtWidgets.QDialog):
         self._previousIdentifier = config['identifier']
         self._ui.lineEditIdentifier.setText(config['identifier'])
         self._ui.checkBoxRecurse.setChecked(config['Recurse Directory Structure'])
-        self._ui.lineEditDirectoryLocation.setText(config['location'])
-        self._previous_location = os.path.join(self._workflow_location, config['previous_location'])
-
+        self._ui.lineEditDirectoryLocation.setText(to_system_path(config['location']))
+        self._previous_location = to_system_path(os.path.join(self._workflow_location, config['previous_location']))
